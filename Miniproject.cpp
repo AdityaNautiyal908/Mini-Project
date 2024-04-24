@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <string.h>
+#include <cctype>
 
 #define MAX_ITEMS 100
 #define SECURITY_CODE 00000
@@ -328,23 +329,38 @@ void updateProducts() {
 }
 
 void enterSecurityCode() {
-    int code;
+    char code[6]; // Array to store the code (5 digits + null terminator)
     printf(ANSI_COLOR_CYAN "Enter the 5-digit security code: " ANSI_COLOR_RESET);
 
-    // Keep prompting the user until a valid numeric code is entered
-    while (scanf("%d", &code) != 1 || code < 0 || code > 99999) {
-        printf(ANSI_COLOR_RED "Invalid input. Please enter a 5-digit numeric code.\n" ANSI_COLOR_RESET);
+    // Keep prompting the user until a valid code is entered
+    while (1) {
+        fgets(code, sizeof(code), stdin); // Read the input as a string
+        code[strcspn(code, "\n")] = '\0'; // Remove the newline character
 
-        // Clear the input buffer
-        while (getchar() != '\n');
-        
-        printf(ANSI_COLOR_CYAN "Enter the 5-digit security code: " ANSI_COLOR_RESET);
+        // Check if the code has exactly five characters and contains only digits
+        int valid = 1;
+        if (strlen(code) != 5) {
+            valid = 0;
+        } else {
+            for (int i = 0; i < 5; i++) {
+                if (!isdigit(code[i])) {
+                    valid = 0;
+                    break;
+                }
+            }
+        }
+
+        if (!valid) {
+            printf(ANSI_COLOR_RED "Invalid input. Please enter a 5-digit numeric code: " ANSI_COLOR_RESET);
+        } else {
+            break; // Exit the loop if the code is valid
+        }
     }
 
-    // Clear the newline character from the input buffer
-    getchar();
+    // Convert the code string to an integer
+    int numericCode = atoi(code);
 
-    if (code != SECURITY_CODE) {
+    if (numericCode != SECURITY_CODE) {
         printf(ANSI_COLOR_RED "Incorrect security code. Access denied.\n" ANSI_COLOR_RESET);
         exit(1);
     }
