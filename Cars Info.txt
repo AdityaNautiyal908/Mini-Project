@@ -1,0 +1,17 @@
+BOOKED CAR : 
+================
+
+		CAR INFO : 
+		========== 
+			 Car Name : Tesla
+			 Car Model : 2017
+			 Car Number : STP-3080
+			 Car Color : GREY
+
+		CUSTOMER INFO : 
+		===============
+			 Name : Aditya Nautiyal
+			 Identity Proof: 234578412587
+			 Phone Number : 8979826328
+			 Address : Ambiwala
+
